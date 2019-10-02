@@ -25,6 +25,7 @@ public class StudentRegistrationSystem {
         String name = scan.nextLine();
         
         Student stud1 = new Student(matric,name);
+        Student stud2 = new Student(matric,name);
         
         System.out.println("Name:"+stud1.getName());
         System.out.println("Matric:"+stud1.getMatric());
@@ -36,6 +37,7 @@ public class StudentRegistrationSystem {
         
         System.out.println("Name:"+stud1.getName());
         System.out.println("Matric:"+stud1.getMatric());
+        
         
     }
     
