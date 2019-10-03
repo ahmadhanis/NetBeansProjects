@@ -19,26 +19,27 @@ public class StudentRegistrationSystem {
     public static void main(String[] args) {
         // TODO code application logic here
         Scanner scan = new Scanner(System.in);
-        System.out.println("Enter Student Matric:");
-        String matric = scan.nextLine();
-        System.out.println("Enter Student Name:");
-        String name = scan.nextLine();
-        
-        Student stud1 = new Student(matric,name);
-        Student stud2 = new Student(matric,name);
-        
-        System.out.println("Name:"+stud1.getName());
-        System.out.println("Matric:"+stud1.getMatric());
-        
-        System.out.println("Re-set Name");
-        System.out.println("Enter Student Name:");
-        name = scan.nextLine();
-        stud1.setName(name);
-        
-        System.out.println("Name:"+stud1.getName());
-        System.out.println("Matric:"+stud1.getMatric());
-        
-        
+        Scanner scanstr = new Scanner(System.in);
+
+        System.out.print("How many student:");
+        int num = scan.nextInt();
+        Student stud[] = new Student[num];
+
+        for (int i = 0; i < num; i++) {
+            System.out.print("Enter name:");
+            String name = scanstr.nextLine();
+            System.out.print("Enter Matric:");
+            String matric = scanstr.nextLine();
+            stud[i] = new Student(matric, name);
+        }
+        System.out.println("Insert data success");
+        System.out.println("Your Data");
+        System.out.println("Name \t Matric");
+        for (int i = 0; i < num; i++) {
+            System.out.print(stud[i].getName() + "\t|");
+            System.out.println(stud[i].getMatric());
+        }
+
     }
-    
+
 }
