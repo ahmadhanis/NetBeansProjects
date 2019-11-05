@@ -5,7 +5,12 @@
  */
 package studentregistrationsystem;
 
-import java.util.Scanner;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -18,28 +23,55 @@ public class StudentRegistrationSystem {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Scanner scan = new Scanner(System.in);
-        Scanner scanstr = new Scanner(System.in);
-
-        System.out.print("How many student:");
-        int num = scan.nextInt();
-        Student stud[] = new Student[num];
-
-        for (int i = 0; i < num; i++) {
-            System.out.print("Enter name:");
-            String name = scanstr.nextLine();
-            System.out.print("Enter Matric:");
-            String matric = scanstr.nextLine();
-            stud[i] = new Student(matric, name);
-        }
-        System.out.println("Insert data success");
-        System.out.println("Your Data");
-        System.out.println("Name \t Matric");
-        for (int i = 0; i < num; i++) {
-            System.out.print(stud[i].getName() + "\t|");
-            System.out.println(stud[i].getMatric());
-        }
-
+        Student student[] = new Student[5];
+        
+        JFrame frame = new JFrame("Student Registration System");
+        frame.setSize(350, 300);
+        frame.setLayout(null);
+        
+        JLabel labelname = new JLabel("Name:");
+        labelname.setBounds(10, 10, 100, 20);
+        frame.add(labelname);
+        
+        JLabel labelmatric = new JLabel("Matric:");
+        labelmatric.setBounds(10, 30, 100, 20);
+        frame.add(labelmatric);
+        
+        JLabel labelphone = new JLabel("Phone:");
+        labelphone.setBounds(10, 50, 100, 20);
+        frame.add(labelphone);
+        
+        JTextField jtextfield1name = new JTextField();
+        jtextfield1name.setBounds(100, 10, 200, 20);
+        frame.add(jtextfield1name);
+        
+        JTextField jtextfield1matric = new JTextField();
+        jtextfield1matric.setBounds(100, 30, 200, 20);
+        frame.add(jtextfield1matric);
+        
+        JTextField jtextfield1phone = new JTextField();
+        jtextfield1phone.setBounds(100, 50, 200, 20);
+        frame.add(jtextfield1phone);
+        
+        JLabel labeloutput = new JLabel("Output:");
+        labeloutput.setBounds(100, 100, 150, 20);
+        frame.add(labeloutput);
+        
+        JButton jButton = new JButton("Insert");
+        jButton.setBounds(100,80,200,20);
+        frame.add(jButton);
+        
+        jButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                String name = jtextfield1name.getText();
+                String matric = jtextfield1matric.getText();
+                String phone = jtextfield1phone.getText();
+            }
+        });
+                
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
 }

@@ -10,22 +10,33 @@ package studentregistrationsystem;
  * @author user
  */
 public class Student {
-    private String matric_no;
-    private String name;
-    
-    Student(String matric_no,String name){
+
+    private final String matric_no;
+    private String name, phone;
+
+    Student(String matric_no, String name, String phone) {
         this.matric_no = matric_no;
         this.name = name;
+        this.phone = phone;
     }
-    
-    String getName(){
+
+    String getName() {
         return this.name;
     }
-    String getMatric(){
+
+    String getMatric() {
         return this.matric_no;
     }
-    
-    void setName(String name){
+
+    String getPhone() {
+        return this.phone;
+    }
+
+    void setName(String name) {
         this.name = name;
-    }  
+    }
+
+    void setPhone(String phone) {
+        this.phone = phone;
+    }
 }
