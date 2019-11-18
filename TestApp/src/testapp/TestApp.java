@@ -13,8 +13,10 @@ public class TestApp {
 
     public static void main(String[] args) {
         // TODO code application logic here
-        Student student = new Student();
-        Lecturer lecturer = new Lecturer();
+        Student student[] = new Student[5];
+        for (int i =0;i <student.length;i++){
+            student[i] = new Student();
+        }
     }
 }
 class Student extends Person {

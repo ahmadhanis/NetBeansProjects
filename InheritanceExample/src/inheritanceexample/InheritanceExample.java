@@ -16,6 +16,25 @@ public class InheritanceExample {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Classa classa = new Classa();
+        classa.methoda();
+        classa.ca = 10;
+        classa.cb = 12;
+        classa.methodb();
     }
     
+}
+
+class Classa extends Classb{
+    int ca;
+    void methoda(){
+        
+    }
+}
+
+class Classb{
+    int cb;
+    void methodb(){
+        
+    }
 }
