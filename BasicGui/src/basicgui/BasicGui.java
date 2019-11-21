@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -28,9 +29,9 @@ public class BasicGui {
     public static void main(String[] args) {
         // TODO code application logic here
         ArrayList<Student> studentlist = new ArrayList<Student>();
-        
-        JFrame frame = new JFrame("Basic Interface");
-        frame.setSize(300, 400);
+
+        JFrame frame = new JFrame("Student Information System");
+        frame.setSize(300, 450);
 
         JLabel jlabel = new JLabel("Name");
         jlabel.setBounds(10, 10, 60, 20);
@@ -45,36 +46,40 @@ public class BasicGui {
         frame.add(jlabelb);
 
         JTextField jtfname = new JTextField();
-        jtfname.setBounds(80, 10, 150, 20);
+        jtfname.setBounds(80, 10, 200, 20);
         frame.add(jtfname);
 
         JTextField jtfmatric = new JTextField();
-        jtfmatric.setBounds(80, 30, 150, 20);
+        jtfmatric.setBounds(80, 30, 100, 20);
         frame.add(jtfmatric);
 
         JTextField jtfphone = new JTextField();
         jtfphone.setBounds(80, 50, 150, 20);
         frame.add(jtfphone);
 
-        JButton jbutton = new JButton("INSERT");
-        jbutton.setBounds(80, 80, 100, 20);
-        frame.add(jbutton);
-        
+        JButton jbuttoninsert = new JButton("INSERT");
+        jbuttoninsert.setBounds(80, 80, 80, 20);
+        frame.add(jbuttoninsert);
+
+        JButton jbuttondelete = new JButton("DELETE");
+        jbuttondelete.setBounds(165, 80, 80, 20);
+        frame.add(jbuttondelete);
+
         //table creation
         String header[] = new String[]{"Matric", "Name", "Phone"};
         DefaultTableModel dtm = new DefaultTableModel(header, 1);
         JTable jtable = new JTable();
-        jtable.setBounds(20, 110, 220, 200);
+        jtable.setBounds(20, 140, 250, 250);
         frame.add(jtable);
         jtable.setModel(dtm);
         JScrollPane scrollPane = new JScrollPane(jtable);
-        scrollPane.setBounds(20, 110, 220, 200);
+        scrollPane.setBounds(20, 140, 250, 250);
         frame.add(scrollPane);
         jtable.getColumnModel().getColumn(0).setPreferredWidth(70);
         jtable.getColumnModel().getColumn(1).setPreferredWidth(150);
         jtable.getColumnModel().getColumn(2).setPreferredWidth(100);
 
-        jbutton.addActionListener(new ActionListener() {
+        jbuttoninsert.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 String name = jtfname.getText();
@@ -89,6 +94,28 @@ public class BasicGui {
             }
         });
 
+        jbuttondelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                String matric = JOptionPane.showInputDialog("Matric number to delete?");
+                if (matric != null) {
+                    System.out.println("not null");
+                    for (int i = 0; i < studentlist.size(); i++) {
+                        if (studentlist.get(i).getMatric().equalsIgnoreCase(matric)) {
+                            studentlist.remove(i);
+                        }
+                    }
+                    dtm.setRowCount(0);
+                    for (int i = 0; i < studentlist.size(); i++) {//populate table using object list
+                        Object[] objs = {studentlist.get(i).getMatric(), studentlist.get(i).getName(), studentlist.get(i).getPhone()};
+                        dtm.addRow(objs);
+                    }
+                }
+            }
+        });
+
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
         frame.setLayout(null);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
