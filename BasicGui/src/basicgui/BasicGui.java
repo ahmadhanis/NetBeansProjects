@@ -7,6 +7,9 @@ package basicgui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,14 +25,12 @@ import javax.swing.table.DefaultTableModel;
  * @author user
  */
 public class BasicGui {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-        ArrayList<Student> studentlist = new ArrayList<Student>();
-
+    ArrayList<Student> studentlist = new ArrayList<Student>();
+    String header[] = new String[]{"Matric", "Name", "Phone"};
+    DefaultTableModel dtm = new DefaultTableModel(header, 1);
+    
+    BasicGui(){
+        
         JFrame frame = new JFrame("Student Information System");
         frame.setSize(300, 450);
 
@@ -58,16 +59,22 @@ public class BasicGui {
         frame.add(jtfphone);
 
         JButton jbuttoninsert = new JButton("INSERT");
-        jbuttoninsert.setBounds(80, 80, 80, 20);
+        jbuttoninsert.setBounds(80, 80, 90, 20);
         frame.add(jbuttoninsert);
 
         JButton jbuttondelete = new JButton("DELETE");
-        jbuttondelete.setBounds(165, 80, 80, 20);
+        jbuttondelete.setBounds(180, 80, 90, 20);
         frame.add(jbuttondelete);
 
+        JButton jbuttonsearch = new JButton("SEARCH");
+        jbuttonsearch.setBounds(80, 110, 90, 20);
+        frame.add(jbuttonsearch);
+
+        JButton jbuttonupdate = new JButton("UPDATE");
+        jbuttonupdate.setBounds(180, 110, 90, 20);
+        frame.add(jbuttonupdate);
+
         //table creation
-        String header[] = new String[]{"Matric", "Name", "Phone"};
-        DefaultTableModel dtm = new DefaultTableModel(header, 1);
         JTable jtable = new JTable();
         jtable.setBounds(20, 140, 250, 250);
         frame.add(jtable);
@@ -85,7 +92,8 @@ public class BasicGui {
                 String name = jtfname.getText();
                 String matric = jtfmatric.getText();
                 String phone = jtfphone.getText();
-                studentlist.add(new Student(name, matric, phone));//create object list array
+                Student student = new Student(name, matric, phone);
+                studentlist.add(student);//create object list array
                 dtm.setRowCount(0);//reset table
                 for (int i = 0; i < studentlist.size(); i++) {//populate table using object list
                     Object[] objs = {studentlist.get(i).getMatric(), studentlist.get(i).getName(), studentlist.get(i).getPhone()};
@@ -114,12 +122,92 @@ public class BasicGui {
             }
         });
 
+        jbuttonsearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                String matric = JOptionPane.showInputDialog("Enter Matric Number?");
+                if (matric != null) {
+                    for (int i = 0; i < studentlist.size(); i++) {
+                        if (studentlist.get(i).getMatric().equalsIgnoreCase(matric)) {
+                            JOptionPane.showMessageDialog(frame, "Found!!!");
+                            jtfmatric.setText(studentlist.get(i).getMatric());
+                            jtfname.setText(studentlist.get(i).getName());
+                            jtfphone.setText(studentlist.get(i).getPhone());
+                            return;
+                        }
+                    }
+                    JOptionPane.showMessageDialog(frame, "Not Found!!!");
+                }
+            }
+        });
+
+        jbuttonupdate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                String matric = jtfmatric.getText();
+                String name = jtfname.getText();
+                String phone = jtfphone.getText();
+
+                if (matric != null) {
+                    for (int i = 0; i < studentlist.size(); i++) {
+                        if (studentlist.get(i).getMatric().equalsIgnoreCase(matric)) {
+                            studentlist.get(i).setName(name);
+                            studentlist.get(i).setPhone(phone);
+                            JOptionPane.showMessageDialog(frame, "Updated!!!");
+                        }
+                    }
+                }
+
+                dtm.setRowCount(0);
+                for (int i = 0; i < studentlist.size(); i++) {//populate table using object list
+                    Object[] objs = {studentlist.get(i).getMatric(), studentlist.get(i).getName(), studentlist.get(i).getPhone()};
+                    dtm.addRow(objs);
+                }
+            }
+        });
+        loadData();
+        
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
     }
-
+    
+    
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        // TODO code application logic here
+        BasicGui basicgui = new BasicGui();
+        
+    }
+    
+    
+    void loadData() {   
+        try {
+            File file = new File("data.txt"); //create file
+            file.createNewFile();//if not exit
+            FileReader f = new FileReader("data.txt");
+            StringBuffer sb = new StringBuffer();
+            while (f.ready()) {
+                char c = (char) f.read();
+                if (c == '-') {
+                    System.out.println(sb);
+                    String studentarray[] = sb.toString().split(",");
+                    Student student = new Student(studentarray[0],studentarray[1],studentarray[2] );
+                    studentlist.add(student);
+                    sb = new StringBuffer();
+                } else {
+                    sb.append(c);
+                }
+            }
+            dtm.setRowCount(0);
+            for (int i = 0; i < studentlist.size(); i++) {//populate table using object list
+                Object[] objs = {studentlist.get(i).getMatric(), studentlist.get(i).getName(), studentlist.get(i).getPhone()};
+                dtm.addRow(objs);
+            }
+        } catch (IOException e) {}
+    }
 }
