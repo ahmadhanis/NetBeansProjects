@@ -73,11 +73,11 @@ public class BasicGui {
         JButton jbuttonsearch = new JButton("SEARCH");
         jbuttonsearch.setBounds(80, 110, 90, 20);
         frame.add(jbuttonsearch);
-            
+
         JButton jbuttonupdate = new JButton("UPDATE");
         jbuttonupdate.setBounds(180, 110, 90, 20);
         frame.add(jbuttonupdate);
-        
+
         JButton jbuttonexit = new JButton("EXIT");
         jbuttonexit.setBounds(180, 390, 90, 20);
         frame.add(jbuttonexit);
@@ -97,9 +97,18 @@ public class BasicGui {
         jbuttoninsert.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                String name = jtfname.getText();
+                String name = jtfname.getText().toUpperCase();
                 String matric = jtfmatric.getText();
                 String phone = jtfphone.getText();
+                if (name.length() < 5) {
+                    JOptionPane.showMessageDialog(frame, "Name should contain more than 5 char!!!");
+                    return;
+                }
+                if (!isInteger(matric)) {
+                    JOptionPane.showMessageDialog(frame, "Matric should only contain integer!!!");
+                    return;
+                }
+
                 Student student = new Student(name, matric, phone);
                 studentlist.add(student);//create object list array
                 writeData();
@@ -163,11 +172,11 @@ public class BasicGui {
         jbuttonexit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-               frame.setVisible(false); //you can't see me!
-               frame.dispose();
+                frame.setVisible(false); //you can't see me!
+                frame.dispose();
             }
         });
-        
+
         readData();
         jtable.addMouseListener(new MouseAdapter() {
             @Override
@@ -238,5 +247,29 @@ public class BasicGui {
             Object[] objs = {studentlist.get(i).getMatric(), studentlist.get(i).getName(), studentlist.get(i).getPhone()};
             dtm.addRow(objs);
         }
+    }
+
+    public boolean isInteger(String str) {
+        if (str == null) {
+            return false;
+        }
+        int length = str.length();
+        if (length == 0) {
+            return false;
+        }
+        int i = 0;
+        if (str.charAt(0) == '-') {
+            if (length == 1) {
+                return false;
+            }
+            i = 1;
+        }
+        for (; i < length; i++) {
+            char c = str.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
+        return true;
     }
 }
